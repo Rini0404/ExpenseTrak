@@ -1,148 +1,290 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React from 'react'
-import { FontAwesome } from '@expo/vector-icons'; 
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Modal,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
+import React from "react";
+import { FontAwesome } from "@expo/vector-icons";
+import SignIn from "./SignIn";
 
+interface Props {
+  isLoading: boolean;
+  email: string;
+  password: string;
+}
 
-const Auth = () => {
+// children
 
-  const [email, setEmail] = React.useState('')
-  const [password, setPassword] = React.useState('')
-  const [name, setName] = React.useState('')
+export default function Auth(props: Props) {
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [name, setName] = React.useState("");
 
-  const onSignUp = () => {  
-        console.log('sign up')
-  }
+  const [isLoading, setIsLoading] = React.useState(false);
 
-  // function that grabs the password and when you click a button shows the password
+  // const DissmissKeyboard = ({ children }) => (
+  //   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+  //     {children}
+  //   </TouchableWithoutFeedback>
+  // );
+
+  const onSignUp = () => {
+    setIsLoading(true);
+
+    fetch("http://localhost:3000/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        name,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => console.log(err));
+  };
 
   const unHidePassword = () => {
-    console.log('unhide password')
-  }
+    console.log("unhide password");
+  };
+
+  const [changeTab, setChangeTab] = React.useState(false);
+
+  const handleChange = () => {
+    setChangeTab(true);
+    setChangeSignUp(false);
+  };
+  const [ changeSignUp, setChangeSignUp ] = React.useState(false);
+
+  const handleOtherChange = () => {
+    setChangeTab(false);
+    setChangeSignUp(true);
+  };
+
 
 
 
   return (
-    <View style = { styles.container}>
-      {/* top text  */}
-      <View style = { styles.topTextContainer}>
-        <Text style = { styles.topText}>Create an Account</Text>
+    <View style={styles.container}>
+      {/* tabs for modal */}
+      <View style={styles.tabs}>
+      
+        {changeTab ? (
+          <TouchableOpacity onPress={handleChange} style={styles.tab}>
+            <View style={styles.tabTextContainer}>
+              <Text style={styles.tabText}>Sign In</Text>
+            </View>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={handleChange} style={styles.tab}>
+            <Text style={styles.tabText}>Sign In</Text>
+          </TouchableOpacity>
+        )}
+        
+        {
+          changeSignUp ? (
+          <TouchableOpacity onPress={handleOtherChange} style={styles.tab2}>
+          <View style={styles.tabTextContainer}>
+          <Text style={styles.tabText}>Sign Up</Text>
+          </View>
+        </TouchableOpacity>   
+        ) : (
+          <TouchableOpacity onPress={handleOtherChange} style={styles.tab2}>
+          <Text style={styles.tabText}>Sign Up</Text>
+        </TouchableOpacity>
+        )
+        }
+    
+        
       </View>
 
-      <View style = { styles.inputContainer}>
-
-      {/* add pill like form data */}
-
-      <TouchableOpacity style = { styles.inputF}>
-
-      <TextInput style = { styles.inputText}
-      placeholderTextColor = 'black'
-      placeholder = 'First Name' />
-        
-      </TouchableOpacity>
-
-      <TouchableOpacity style = { styles.inputF2}>
-
-      <TextInput style = { styles.inputText}
-      placeholderTextColor = 'black'
-      placeholder = 'Email Adress' />
-        
-      </TouchableOpacity>
-
-      <TouchableOpacity style = { styles.inputF2}>
-
-      <TextInput style = { styles.inputText}
-      placeholderTextColor = 'black'
-      placeholder = 'Password'
-      secureTextEntry = {true}
-
-      />
 
 
-        
-      </TouchableOpacity>
+     {
+        changeSignUp ? (
+          <View style={styles.inputContainer}>
+          <TouchableOpacity style={styles.inputF}>
+            <TextInput
+              style={styles.inputText}
+              placeholderTextColor="black"
+              placeholder="First Name"
+              onChangeText={(name) => setName(name)}
+              value={name}
+            />
+          </TouchableOpacity>
+  
+          <TouchableOpacity style={styles.inputF2}>
+            <TextInput
+              style={styles.inputText}
+              placeholderTextColor="black"
+              placeholder="Email Adress"
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+            />
+          </TouchableOpacity>
+  
+          <TouchableOpacity style={styles.inputF2}>
+            <TextInput
+              style={styles.inputText}
+              placeholderTextColor="black"
+              placeholder="Password"
+              secureTextEntry={true}
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+            />
+          </TouchableOpacity>
+  
+          {isLoading ? (
+            <Modal animationType="slide" transparent={true} visible={isLoading}>
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <Text style={styles.modalText}>Loading...</Text>
+                </View>
+              </View>
+            </Modal>
+          ) : (
+            <TouchableOpacity onPress={onSignUp} style={styles.button}>
+              <Text style={styles.buttonText}>SignUp</Text>
+            </TouchableOpacity>
+          )}
+        </View>
 
-      </View> 
+        ) : (
+          <SignIn />
+        )
 
-      {/* bottom text  */}
-      <TouchableOpacity style = { styles.button }>
-        <Text style = { styles.buttonText }>SignUp</Text>
-      </TouchableOpacity>
-
+     }
 
     </View>
-  )
+  );
+};
 
-}
-
-export default Auth
 
 const styles = StyleSheet.create({
-  inputText: {
-    color: 'black',
-    width: '80%',
+  tabTextContainer: {
+    borderBottomWidth: 7,
+    borderBottomRightRadius: 10,
+    borderBottomLeftRadius: 10,
+    borderColor: "#F5F5DC",
+    paddingBottom: 5,
   },
-  inputF: {
-    backgroundColor: 
-    '#F5F5DC',
-    width: "80%",
+  tabs: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    width: "100%",
     height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 25,
-    marginBottom: 20,
-    marginTop: 70,
-  
   },
-  inputF2: {
-    backgroundColor: 
-    '#F5F5DC',
-    width: "80%",
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 25,
-    marginBottom: 20,
-  
+  tab: {
+    width: "50%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 10,
   },
-  inputContainer: {
-    width: '100%',
-    height: '75%',
-    borderWidth: 1,
-    borderColor: 'red',
-    marginBottom: 20,
-    alignItems: 'center',
+  tab2: {
+    width: "50%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 10,
+
+  },
+  tabText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "white",
   },
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
+    // borderWidth: 1,
+    // borderColor: "white",
+    height: "60%",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalView: {
+    backgroundColor: "rgb(143, 188, 143)",
+    opacity: 0.8,
+    // cover the whole screen
+    width: "100%",
+    height: "100%",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+  },
+  inputText: {
+    color: "black",
+    width: "80%",
+  },
+  inputF: {
+    backgroundColor: "#F5F5DC",
+    width: "80%",
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 25,
+    marginBottom: 20,
+    marginTop: 50,
+  },
+  inputF2: {
+    backgroundColor: "#F5F5DC",
+    width: "80%",
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 25,
+    marginBottom: 20,
+  },
+  inputContainer: {
+    width: "80%",
+    height: "50%",
+    marginBottom: 20,
+    alignItems: "center",
+    backgroundColor: "rgb(143, 188, 143)",
+    borderRadius: 25,
   },
   button: {
-    backgroundColor: 
-    '#F5F5DC',
-    width: 200,
+    backgroundColor: "#F5F5DC",
+    width: "80%",
     height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 25,
-    marginBottom: 70,
+    marginTop: 60,
+    // marginBottom: 20,
+    // bottom: 40,
   },
   buttonText: {
-    color: 'black',
+    color: "black",
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   topTextContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 20,
     flex: 1,
-
   },
   topText: {
     fontSize: 30,
-    fontWeight: 'bold',
-    color: 'white',
+    fontWeight: "bold",
+    color: "white",
     // fontFamily:
-  }
-
-})
+  },
+});
