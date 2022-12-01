@@ -11,6 +11,8 @@ import {
 import React from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import SignIn from "./SignIn";
+import GoogleUp from "../components/Socials/GoogleUp";
+import FbUp from "../components/Socials/FbUp";
 
 interface Props {
   isLoading: boolean;
@@ -18,7 +20,7 @@ interface Props {
   password: string;
 }
 
-// children
+// const Sig
 
 export default function Auth(props: Props) {
   const [email, setEmail] = React.useState("");
@@ -58,27 +60,23 @@ export default function Auth(props: Props) {
     console.log("unhide password");
   };
 
-  const [changeTab, setChangeTab] = React.useState(false);
+  const [changeTab, setChangeTab] = React.useState(true);
 
   const handleChange = () => {
     setChangeTab(true);
     setChangeSignUp(false);
   };
-  const [ changeSignUp, setChangeSignUp ] = React.useState(false);
+  const [changeSignUp, setChangeSignUp] = React.useState(false);
 
   const handleOtherChange = () => {
     setChangeTab(false);
     setChangeSignUp(true);
   };
 
-
-
-
   return (
     <View style={styles.container}>
       {/* tabs for modal */}
       <View style={styles.tabs}>
-      
         {changeTab ? (
           <TouchableOpacity onPress={handleChange} style={styles.tab}>
             <View style={styles.tabTextContainer}>
@@ -90,29 +88,22 @@ export default function Auth(props: Props) {
             <Text style={styles.tabText}>Sign In</Text>
           </TouchableOpacity>
         )}
-        
-        {
-          changeSignUp ? (
+
+        {changeSignUp ? (
           <TouchableOpacity onPress={handleOtherChange} style={styles.tab2}>
-          <View style={styles.tabTextContainer}>
-          <Text style={styles.tabText}>Sign Up</Text>
-          </View>
-        </TouchableOpacity>   
+            <View style={styles.tabTextContainer}>
+              <Text style={styles.tabText}>Sign Up</Text>
+            </View>
+          </TouchableOpacity>
         ) : (
           <TouchableOpacity onPress={handleOtherChange} style={styles.tab2}>
-          <Text style={styles.tabText}>Sign Up</Text>
-        </TouchableOpacity>
-        )
-        }
-    
-        
+            <Text style={styles.tabText}>Sign Up</Text>
+          </TouchableOpacity>
+        )}
       </View>
 
-
-
-     {
-        changeSignUp ? (
-          <View style={styles.inputContainer}>
+      {changeSignUp ? (
+        <View style={styles.inputContainer}>
           <TouchableOpacity style={styles.inputF}>
             <TextInput
               style={styles.inputText}
@@ -122,7 +113,7 @@ export default function Auth(props: Props) {
               value={name}
             />
           </TouchableOpacity>
-  
+
           <TouchableOpacity style={styles.inputF2}>
             <TextInput
               style={styles.inputText}
@@ -132,7 +123,7 @@ export default function Auth(props: Props) {
               onChangeText={(text) => setEmail(text)}
             />
           </TouchableOpacity>
-  
+
           <TouchableOpacity style={styles.inputF2}>
             <TextInput
               style={styles.inputText}
@@ -143,7 +134,20 @@ export default function Auth(props: Props) {
               onChangeText={(text) => setPassword(text)}
             />
           </TouchableOpacity>
-  
+
+          {/* or sign up with */}
+          <View style={styles.orSignUp}>
+            <View style={styles.line}></View>
+            <Text style={styles.orText}>or sign up with</Text>
+            <View style={styles.line}></View>
+          </View>
+
+          {/* socials */}
+          <View style={styles.socials}>
+          <GoogleUp />
+          <FbUp />
+          </View>
+
           {isLoading ? (
             <Modal animationType="slide" transparent={true} visible={isLoading}>
               <View style={styles.centeredView}>
@@ -154,23 +158,44 @@ export default function Auth(props: Props) {
             </Modal>
           ) : (
             <TouchableOpacity onPress={onSignUp} style={styles.button}>
-              <Text style={styles.buttonText}>SignUp</Text>
+              <Text style={styles.buttonText}>Sign Up</Text>
             </TouchableOpacity>
           )}
         </View>
-
-        ) : (
-          <SignIn />
-        )
-
-     }
-
+      ) : (
+        <SignIn email={email} password={password} isLoading={isLoading} />
+      )}
     </View>
   );
-};
-
+}
 
 const styles = StyleSheet.create({
+  socials: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    width: "100%",
+    marginTop: 30,
+    marginBottom: 30,
+  },
+
+  orSignUp: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 20,
+  },
+  orText: {
+    color: "black",
+    fontSize: 15,
+    fontWeight: "bold",
+    marginHorizontal: 10,
+  },
+  line: {
+    height: 1,
+    width: 100,
+    backgroundColor: "black",
+  },
+
   tabTextContainer: {
     borderBottomWidth: 7,
     borderBottomRightRadius: 10,
@@ -198,7 +223,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 10,
-
   },
   tabText: {
     fontSize: 20,
@@ -207,6 +231,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    top: "-10%",
     alignItems: "center",
     justifyContent: "center",
     // borderWidth: 1,
@@ -254,7 +279,7 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     width: "80%",
-    height: "50%",
+    height: "60%",
     marginBottom: 20,
     alignItems: "center",
     backgroundColor: "rgb(143, 188, 143)",
@@ -267,9 +292,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 25,
-    marginTop: 60,
-    // marginBottom: 20,
-    // bottom: 40,
+    marginTop: 20,
   },
   buttonText: {
     color: "black",

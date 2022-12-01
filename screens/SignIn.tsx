@@ -1,14 +1,16 @@
 import { View, Text, Modal, TouchableOpacity, TextInput,  StyleSheet } from 'react-native'
 import React, { Component } from 'react'
+import GoogleUp from '../components/Socials/GoogleUp';
+import FbUp from '../components/Socials/FbUp';
 
 
 interface Props {
-    isLoading: boolean;
+    isLoading: any;
     email: string;
     password: string;
 }
 
-export default class Auth extends Component<Props> {
+export default class Auth extends Component<Props, any> {
 
 
   constructor(props: Props) {
@@ -16,43 +18,31 @@ export default class Auth extends Component<Props> {
     super(props);
   
     this.state = {
-      changeTab: false,
-      setChangeTab: false,
-      changeSignUp: false,
-      setChangeSignUp: false,
+      isLoading: false,
       password: '',
       email: ''
-
     };
   }
 
 
     render() {
 
-    const { isLoading, email, password } = this.props;
-
+    const { isLoading, email, password } = this.state;
 
     const onSignIn = () => {
-      // this is how to set The state
-      this.setState({ isLoading });
-      
+      this.setState({isLoading: true})
     };
-    
+
     return (
       <View style={styles.inputContainer}>
-      <TouchableOpacity style={styles.inputF}>
-        <TextInput
-          style={styles.inputText}
-          placeholderTextColor="black"
-          placeholder="First Name"
-        />
-      </TouchableOpacity>
 
       <TouchableOpacity style={styles.inputF2}>
         <TextInput
           style={styles.inputText}
           placeholderTextColor="black"
           placeholder="Email Adress"
+          onChangeText={(text) => this.setState({email: text})}
+          value={email}
         />
       </TouchableOpacity>
 
@@ -62,8 +52,22 @@ export default class Auth extends Component<Props> {
           placeholderTextColor="black"
           placeholder="Password"
           secureTextEntry={true}
+          onChangeText = {(text) => this.setState({password: text})}
+          value={password}
         />
       </TouchableOpacity>
+
+      <View style={styles.orSignUp}>
+            <View style={styles.line}></View>
+            <Text style={styles.orText}>or sign in with</Text>
+            <View style={styles.line}></View>
+          </View>
+
+          {/* socials */}
+          <View style={styles.socials}>
+          <GoogleUp />
+          <FbUp />
+          </View>
 
       {isLoading ? (
         <Modal animationType="slide" transparent={true} visible={isLoading}>
@@ -75,7 +79,7 @@ export default class Auth extends Component<Props> {
         </Modal>
       ) : (
         <TouchableOpacity onPress={onSignIn} style={styles.button}>
-          <Text style={styles.buttonText}>SignUp</Text>
+          <Text style={styles.buttonText}>Sign In</Text>
         </TouchableOpacity>
       )}
     </View>
@@ -84,6 +88,33 @@ export default class Auth extends Component<Props> {
 }
 
 const styles = StyleSheet.create({
+  socials: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    width: "100%",
+    marginTop: 30,
+    marginBottom: 10,
+  },
+
+  orSignUp: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 80,
+  },
+  orText: {
+    color: "black",
+    fontSize: 15,
+    fontWeight: "bold",
+    marginHorizontal: 10,
+  },
+  line: {
+    height: 1,
+    width: 100,
+    backgroundColor: "black",
+
+  },
+
   tabTextContainer: {
     borderBottomWidth: 7,
     borderBottomRightRadius: 10,
@@ -146,16 +177,6 @@ const styles = StyleSheet.create({
     color: "black",
     width: "80%",
   },
-  inputF: {
-    backgroundColor: "#F5F5DC",
-    width: "80%",
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 25,
-    marginBottom: 20,
-    marginTop: 50,
-  },
   inputF2: {
     backgroundColor: "#F5F5DC",
     width: "80%",
@@ -163,11 +184,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 25,
-    marginBottom: 20,
+    // marginBottom: 20,
+    marginTop: 50,
   },
   inputContainer: {
     width: "80%",
-    height: "50%",
+    height: "60%",
     marginBottom: 20,
     alignItems: "center",
     backgroundColor: "rgb(143, 188, 143)",
@@ -180,8 +202,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 25,
-    marginTop: 60,
-    // marginBottom: 20,
+    marginTop: 40,
+
+    marginBottom: 30,
     // bottom: 40,
   },
   buttonText: {
