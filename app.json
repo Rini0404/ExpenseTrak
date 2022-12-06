@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "natApp",
-    "slug": "natApp",
+    "name": "expApp",
+    "slug": "expApp",
+    "scheme": "expApp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
@@ -20,10 +20,10 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.rini200.natApp"
+      "bundleIdentifier": "com.rini200.expApp"
     },
     "android": {
-      "package": "com.rini200.natApp",
+      "package": "com.rini200.expApp",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -31,6 +31,11 @@
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "6ef7e50f-78d2-419c-8057-c49f262af47a"
+      }
     }
   }
 }
