@@ -1,33 +1,31 @@
-import { StyleSheet } from 'react-native';
+import React,  { StyleSheet } from 'react-native';
 
 import { Text, View } from '../components/Themed';
 import { RootTabScreenProps } from '../types';
 
-export default function TabOneScreen({ navigation }: RootTabScreenProps<'TabOne'>) {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>
-        Hello User!
-      </Text>
-    </View>
-  );
-}
+  // pass in props
+  export default function TabOneScreen(props: RootTabScreenProps<'TabOne'>) {
+
+    console.log(props)
+  
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>Tab One</Text>
+        <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      </View>
+    )
+  }
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-
   },
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 100,
-    
   },
   separator: {
     marginVertical: 30,
@@ -35,3 +33,4 @@ const styles = StyleSheet.create({
     width: '80%',
   },
 });
+

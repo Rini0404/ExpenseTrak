@@ -18,6 +18,8 @@ import TabTwoScreen from '../screens/TabTwoScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import Auth from '../screens/Auth';
+import HomeScreen from '../screens/HomeScreen';
+
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
@@ -42,7 +44,9 @@ function RootNavigator() {
     >
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      <Stack.Screen name="HomeScreen" component={HomeScreen}  />
       <Stack.Screen name="Auth" component={Auth} />
+      
     </Stack.Navigator>
   );
 }
