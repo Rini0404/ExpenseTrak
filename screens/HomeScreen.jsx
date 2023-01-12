@@ -1,9 +1,6 @@
 // class component
-import React, { Component } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import * as WebBrowser from 'expo-web-browser';
-import { useNavigation } from '@react-navigation/native';
-
+import React, { Component, useState  } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 export default class HomeScreen extends Component {
 
 
@@ -11,6 +8,9 @@ export default class HomeScreen extends Component {
     super(props);
     this.state = {
       userInfo: null,
+      name: null,
+      email: null,
+      picture: null,
     };
   }
 
@@ -18,16 +18,18 @@ export default class HomeScreen extends Component {
 
   render() {
 
-   const { userInfo } = this.props.route.params
-
-   console.log(userInfo)
+    const { user } = this.props.route.params
+    
+    const { name, email, picture } = user;
 
     return (
       // make a small circle with a google logo
       <View style={styles.container}>
         {/* print props */}
-        <Text style={styles.info}>{JSON.stringify(userInfo)}</Text>
+        <Image source={{ uri: picture }} style={{ width: 100, height: 100 }} />
 
+        <Text style={styles.info}>Name: {name}</Text>
+        <Text style={styles.info}>Email: {email}</Text>
       </View>
     );
   }

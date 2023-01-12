@@ -29,11 +29,6 @@ export default function Auth(props: Props) {
 
   const [isLoading, setIsLoading] = React.useState(false);
 
-  // const DissmissKeyboard = ({ children }) => (
-  //   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-  //     {children}
-  //   </TouchableWithoutFeedback>
-  // );
 
   const onSignUp = () => {
     setIsLoading(true);

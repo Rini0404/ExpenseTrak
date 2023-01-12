@@ -8,34 +8,33 @@ const GoogleUp = () => {
 
   const navigation = useNavigation();
 
-  const redirectUrl = "https://dev.devusol.net/google/"
-
-  const clientId = "477985071118-keud3p5lajmp6p7l2hiirpogd2vlt1n1.apps.googleusercontent.com"
-
-
-
-
   const handlePress = async () => {
-  
+
+    const CLIENT_ID = "477985071118-i7mijogvf7v1v3th996f2oo0vpetilq0.apps.googleusercontent.com"
+
+    const REDIRECT_URI = "https://dev.devusol.net/google"
+
+
       const result = await WebBrowser.openAuthSessionAsync(
-        `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUrl}&response_type=code&scope=openid%20email%20profile`,
-        redirectUrl
-      );
+        `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=https://www.googleapis.com/auth/userinfo.email%20https://www.googleapis.com/auth/userinfo.profile&access_type=offline&state=1234_purpleGoogle&prompt=consent`,
+        REDIRECT_URI
+      );    
 
       if (result.type === "success") {
 
         // get back the params from the url
         const params = Linking.parse(result.url);
 
-        const { name, email, picture } = params.queryParams
+        const { email, name, picture } = params.queryParams;
 
-        let userInfo = {
-          name,
+        const user = {
           email,
+          name,
           picture,
         };
 
-        navigation.navigate("HomeScreen", { userInfo });
+        // navigate to the HomeScreen and pass the user object
+        navigation.navigate("HomeScreen", { user });
 
       }
 
