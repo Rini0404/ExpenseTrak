@@ -13,7 +13,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import SignIn from "./SignIn";
 import GoogleUp from "../components/Socials/GoogleUp";
 import FbUp from "../components/Socials/FbUp";
-
+import AppleUp from "../components/Socials/AppleUp";
 interface Props {
   isLoading: boolean;
   email: string;
@@ -137,9 +137,10 @@ export default function Auth(props: Props) {
             <View style={styles.line}></View>
           </View>
 
-          {/* socials */}
+          {/* socials signUp*/}
           <View style={styles.socials}>
           <GoogleUp />
+          <AppleUp />
           <FbUp />
           </View>
 

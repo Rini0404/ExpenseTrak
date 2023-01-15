@@ -9,6 +9,7 @@ import {
 import React, { Component } from "react";
 import GoogleUp from "../components/Socials/GoogleUp";
 import FbUp from "../components/Socials/FbUp";
+import AppleIn from "../components/Socials/AppleIn";
 
 interface Props {
   isLoading: any;
@@ -75,14 +76,10 @@ export default class Auth extends Component<Props, any> {
           <View style={styles.line}></View>
         </View>
 
-
-       
-
-
-
         {/* socials */}
         <View style={styles.socials}>
           <GoogleUp />
+          <AppleIn />
           <FbUp />
         </View>
 

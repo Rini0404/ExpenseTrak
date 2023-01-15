@@ -11,7 +11,7 @@ const FbUp = () => {
         </View>
       </TouchableOpacity>
     </View>
-  );``
+  );
 };
 
 export default FbUp;
